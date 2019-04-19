@@ -23,8 +23,8 @@
     run: os_faults/tests/devstack/playbooks/run_on_devstack.yml
     post-run: os_faults/tests/devstack/playbooks/post.yml
     required-projects:
-      - openstack/os-faults
+      - performa/os-faults
     vars:
       tox_envlist: devstack
       devstack_plugins:
-        os-faults: https://git.openstack.org/openstack/os-faults
+        os-faults: https://opendev.org/performa/os-faults
