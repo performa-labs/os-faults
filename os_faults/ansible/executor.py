@@ -207,7 +207,9 @@ class AnsibleRunner(object):
         any of these statuses
         :return: execution result, type AnsibleExecutionRecord
         """
-        raise_on_statuses = raise_on_statuses or DEFAULT_ERROR_STATUSES
+        if raise_on_statuses is None:
+            raise_on_statuses = DEFAULT_ERROR_STATUSES
+
         LOG.debug('Executing task: %s on hosts: %s with serial: %s',
                   task, hosts, self.serial)
 
