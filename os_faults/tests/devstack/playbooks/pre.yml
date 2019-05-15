@@ -1,5 +1,32 @@
 ---
 
+# as of 15-May-19 devstack copies repos from hardcoded list of organizations only (and performa is not there)
+# copied from https://opendev.org/openstack/devstack/src/branch/master/roles/setup-devstack-source-dirs/tasks/main.yaml
+
+- hosts: all
+  tasks:
+    - name: Find source repos from performa organization
+      find:
+        paths:
+          - src/opendev.org/performa
+        file_type: directory
+      register: found_repos
+
+    - name: Copy Zuul repos into devstack working directory
+      command: rsync -a {{ item.path }} /opt/stack
+      with_items: '{{ found_repos.files }}'
+      become: yes
+
+    - name: Set ownership of repos
+      file:
+        path: /opt/stack
+        state: directory
+        recurse: true
+        owner: stack
+        group: stack
+      become: yes
+
+
 - hosts: all
   roles:
     - bindep
