@@ -17,9 +17,10 @@ PORT_SCHEMA = {
     'items': [
         {'enum': ['tcp', 'udp']},
         {'type': 'integer', 'minimum': 0, 'maximum': 65535},
+        {'enum': ['egress', 'ingress']}
     ],
     'minItems': 2,
-    'maxItems': 2,
+    'maxItems': 3,
 }
 
 AUTH_SCHEMA = {

@@ -53,9 +53,9 @@ class CloudManagement(base_driver.BaseDriver):
         self.containers.update(containers)
 
     def validate_services(self):
-        for service_name, serive_conf in self.services.items():
-            serive_cls = registry.get_driver(serive_conf["driver"])
-            jsonschema.validate(serive_conf['args'], serive_cls.CONFIG_SCHEMA)
+        for service_name, service_conf in self.services.items():
+            cls = registry.get_driver(service_conf["driver"])
+            jsonschema.validate(service_conf['args'], cls.CONFIG_SCHEMA)
 
     def validate_containers(self):
         for container_name, container_conf in self.containers.items():

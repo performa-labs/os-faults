@@ -17,19 +17,11 @@ import signal
 from os_faults.ansible import executor
 from os_faults.api import error
 from os_faults.api import service
+from os_faults.drivers import shared_schemas
 from os_faults import utils
 
-LOG = logging.getLogger(__name__)
 
-PORT_SCHEMA = {
-    'type': 'array',
-    'items': [
-        {'enum': ['tcp', 'udp']},
-        {'type': 'integer', 'minimum': 0, 'maximum': 65535},
-    ],
-    'minItems': 2,
-    'maxItems': 2,
-}
+LOG = logging.getLogger(__name__)
 
 
 class ServiceAsProcess(service.Service):
@@ -52,7 +44,7 @@ class ServiceAsProcess(service.Service):
               restart_cmd: /bin/my_app --restart
               terminate_cmd: /bin/stop_my_app
               start_cmd: /bin/my_app
-              port: ['tcp', 4242]
+              port: ['tcp', 4242, 'ingress']
 
     parameters:
 
@@ -60,8 +52,11 @@ class ServiceAsProcess(service.Service):
     - **restart_cmd** - command to restart service (optional)
     - **terminate_cmd** - command to terminate service (optional)
     - **start_cmd** - command to start service (optional)
-    - **port** - tuple with two values - protocol, port number (optional)
+    - **port** - tuple with two or three values - protocol, port number,
+      direction (optional)
 
+    Note that network operations are based on iptables. They are applied
+    to the whole host and not restricted to a single process.
     """
 
     NAME = 'process'
@@ -73,7 +68,7 @@ class ServiceAsProcess(service.Service):
             'start_cmd': {'type': 'string'},
             'terminate_cmd': {'type': 'string'},
             'restart_cmd': {'type': 'string'},
-            'port': PORT_SCHEMA,
+            'port': shared_schemas.PORT_SCHEMA,
         },
         'required': ['grep'],
         'additionalProperties': False,
@@ -163,10 +158,14 @@ class ServiceAsProcess(service.Service):
     def plug(self, nodes=None):
         nodes = nodes if nodes is not None else self.get_nodes()
         message = "Open port %d for" % self.port[1]
+        direction = self.port[2] if len(self.port) > 2 else 'ingress'
         task = {
             'iptables': {
-                'protocol': self.port[0], 'port': self.port[1],
-                'action': 'unblock', 'service': self.service_name
+                'chain': 'INPUT' if direction == 'ingress' else 'OUTPUT',
+                'protocol': self.port[0],
+                'jump': 'DROP',
+                'destination_port': self.port[1],
+                'state': 'absent',
             },
             'become': 'yes',
         }
@@ -176,10 +175,15 @@ class ServiceAsProcess(service.Service):
     def unplug(self, nodes=None):
         nodes = nodes if nodes is not None else self.get_nodes()
         message = "Close port %d for" % self.port[1]
+        direction = self.port[2] if len(self.port) > 2 else 'ingress'
         task = {
             'iptables': {
-                'protocol': self.port[0], 'port': self.port[1],
-                'action': 'block', 'service': self.service_name
+                'chain': 'INPUT' if direction == 'ingress' else 'OUTPUT',
+                'protocol': self.port[0],
+                'jump': 'DROP',
+                'destination_port': self.port[1],
+                'action': 'insert',
+                'state': 'present',
             },
             'become': 'yes',
         }

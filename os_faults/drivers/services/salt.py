@@ -12,6 +12,8 @@
 # limitations under the License.
 
 from os_faults.drivers.services import process
+from os_faults.drivers import shared_schemas
+
 
 SALT_CALL = 'salt-call --local --retcode-passthrough '
 SALT_RESTART = SALT_CALL + 'service.restart {service}'
@@ -34,13 +36,14 @@ class SaltService(process.ServiceAsProcess):
             args:
               salt_service: app
               grep: my_app
-              port: ['tcp', 4242]
+              port: ['tcp', 4242, 'egress']
 
     parameters:
 
     - **salt_service** - name of a service
     - **grep** - regexp for grep to find process PID
-    - **port** - tuple with two values - protocol, port number (optional)
+    - **port** - tuple with two or three values - protocol, port number,
+      direction (optional)
 
     """
 
@@ -51,7 +54,7 @@ class SaltService(process.ServiceAsProcess):
         'properties': {
             'salt_service': {'type': 'string'},
             'grep': {'type': 'string'},
-            'port': process.PORT_SCHEMA,
+            'port': shared_schemas.PORT_SCHEMA,
         },
         'required': ['grep', 'salt_service'],
         'additionalProperties': False,

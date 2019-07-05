@@ -33,13 +33,14 @@ class SystemService(process.ServiceAsProcess):
             args:
               service_name: app
               grep: my_app
-              port: ['tcp', 4242]
+              port: ['tcp', 4242, 'ingress']
 
     parameters:
 
     - **service_name** - name of a service
     - **grep** - regexp for grep to find process PID
-    - **port** - tuple with two values - protocol, port number (optional)
+    - **port** - tuple with two or three values - protocol, port number,
+      direction (optional)
     """
     NAME = 'system_service'
     DESCRIPTION = 'System Service (systemd, upstart, SysV, etc.)'
