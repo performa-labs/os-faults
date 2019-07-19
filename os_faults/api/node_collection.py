@@ -137,8 +137,13 @@ class NodeCollection(utils.ReprMixin):
 
         """
         LOG.info('Reboot nodes: %s', self)
-        task = {'command': 'reboot now'}
-        self.cloud_management.execute_on_cloud(self.hosts, task)
+        task = {
+            'command': 'reboot now',
+            'become': 'yes',
+        }
+        # note that all errors are ignored
+        self.cloud_management.execute_on_cloud(self.hosts, task,
+                                               raise_on_error=False)
 
     @public
     def poweroff(self):

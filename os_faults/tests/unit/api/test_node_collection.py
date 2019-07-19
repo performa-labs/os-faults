@@ -193,7 +193,8 @@ class NodeCollectionTestCase(test.TestCase):
     def test_reboot(self):
         self.node_collection.reboot()
         self.mock_cloud_management.execute_on_cloud.assert_called_once_with(
-            self.hosts, {'command': 'reboot now'})
+            self.hosts, {'command': 'reboot now', 'become': 'yes'},
+            raise_on_error=False)
 
     def test_snapshot(self):
         self.node_collection.snapshot('foo')
