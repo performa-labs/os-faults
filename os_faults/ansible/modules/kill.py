@@ -19,7 +19,7 @@ def main():
     module = AnsibleModule(
         argument_spec=dict(
             grep=dict(required=True, type='str'),
-            sig=dict(required=True, type='int')
+            sig=dict(required=True, type='str')
         ))
 
     grep = module.params['grep']

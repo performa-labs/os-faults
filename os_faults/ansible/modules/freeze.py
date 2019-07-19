@@ -30,8 +30,8 @@ def main():
            'echo -en \'/bin/bash\\npids=`ps ax | '
            'grep -v grep | '
            'grep %s | awk {{\\047print $1\\047}}`; '
-           'echo $pids | xargs kill -19; sleep %s; '
-           'echo $pids | xargs kill -18; rm \' >> $tf; '
+           'echo $pids | xargs kill -SIGSTOP; sleep %s; '
+           'echo $pids | xargs kill -SIGCONT; rm \' >> $tf; '
            'echo -n $tf >> $tf; '
            'chmod 770 $tf; nohup $tf &"') % (grep, sec)
     rc, stdout, stderr = module.run_command(cmd, check_rc=True)

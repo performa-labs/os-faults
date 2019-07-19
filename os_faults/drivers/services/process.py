@@ -12,7 +12,6 @@
 # limitations under the License.
 
 import logging
-import signal
 
 from os_faults.ansible import executor
 from os_faults.api import error
@@ -121,7 +120,7 @@ class ServiceAsProcess(service.Service):
     def kill(self, nodes=None):
         task = {
             'kill': {
-                'grep': self.grep, 'sig': signal.SIGKILL
+                'grep': self.grep, 'sig': 'SIGKILL'
             },
             'become': 'yes',
         }
@@ -138,7 +137,7 @@ class ServiceAsProcess(service.Service):
         else:
             task = {
                 'kill': {
-                    'grep': self.grep, 'sig': signal.SIGSTOP
+                    'grep': self.grep, 'sig': 'SIGSTOP'
                 },
                 'become': 'yes',
             }
@@ -148,7 +147,7 @@ class ServiceAsProcess(service.Service):
     def unfreeze(self, nodes=None):
         task = {
             'kill': {
-                'grep': self.grep, 'sig': signal.SIGCONT
+                'grep': self.grep, 'sig': 'SIGCONT'
             },
             'become': 'yes',
         }
