@@ -24,7 +24,7 @@ from os_faults import utils
 class PowerDriver(base_driver.BaseDriver):
 
     @abc.abstractmethod
-    def supports(host):
+    def supports(self, host):
         """Returns True if host is supported by the power driver"""
 
     @abc.abstractmethod
