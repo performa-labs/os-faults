@@ -37,6 +37,9 @@ class LibvirtDriver(power_management.PowerDriver):
 
     - **connection_uri** - libvirt uri
 
+    Note that Libvirt domain name should be specified as node attribute.
+    Refer to node discover (node_list driver) for details.
+
     """
 
     NAME = 'libvirt'
@@ -88,9 +91,9 @@ class LibvirtDriver(power_management.PowerDriver):
 
     def poweroff(self, host):
         domain = self._find_domain_by_host(host)
-        LOG.debug('Power off domain with name: %s', host.mac)
+        LOG.debug('Power off domain with name: %s', domain.name())
         domain.destroy()
-        LOG.info('Domain powered off: %s', host.mac)
+        LOG.info('Domain powered off: %s', domain.name())
 
     def poweron(self, host):
         domain = self._find_domain_by_host(host)

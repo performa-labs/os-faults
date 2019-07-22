@@ -29,10 +29,10 @@ Regular installation::
 
     pip install os-faults
 
-The library contains optional libvirt driver, if you plan to use it,
+The library contains optional libvirt driver [https://pypi.org/project/libvirt-python/], if you plan to use it,
 please use the following command to install os-faults with extra dependencies::
 
-    pip install os-faults[libvirt]
+    pip install os-faults libvirt-python
 
 
 Configuration

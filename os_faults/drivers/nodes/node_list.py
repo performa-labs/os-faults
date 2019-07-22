@@ -77,6 +77,7 @@ class NodeListDiscover(node_discover.NodeDiscover):
       MAC address is used for libvirt driver.
     - **fqdn** - FQDN of the node (optional).
       FQDN is used for filtering only.
+    - **libvirt_name** - Libvirt domain name (optional).
     - **auth** - SSH related parameters (optional):
         - **username** - SSH username (optional)
         - **password** - SSH password (optional)
