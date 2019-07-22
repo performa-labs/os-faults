@@ -105,7 +105,6 @@ Available actions:
  * `reboot` - reboot all nodes gracefully
  * `poweroff` - power off all nodes abruptly
  * `reset` - reset (cold restart) all nodes
- * `oom` - fill all node's RAM
  * `disconnect` - disable network with the specified name on all nodes
  * `connect` - enable network with the specified name on all nodes
 

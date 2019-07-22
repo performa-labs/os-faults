@@ -141,13 +141,6 @@ class NodeCollection(utils.ReprMixin):
         self.cloud_management.execute_on_cloud(self.hosts, task)
 
     @public
-    def oom(self):
-        """Fill all node's RAM
-
-        """
-        raise NotImplementedError
-
-    @public
     def poweroff(self):
         """Power off all nodes abruptly
 
