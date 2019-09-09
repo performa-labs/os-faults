@@ -10,8 +10,9 @@ submitted for review via the Gerrit tool:
 
    http://docs.openstack.org/infra/manual/developers.html#development-workflow
 
-Pull requests submitted through GitHub will be ignored.
+Note that the primary repo is https://opendev.org/performa/os-faults/
+Repos located at GitHub are mirrors and may be out of sync.
 
-Bugs should be filed on Launchpad, not GitHub:
+Project bug tracker is Launchpad:
 
    https://bugs.launchpad.net/os-faults

@@ -10,9 +10,9 @@ are implemented as drivers (e.g. DevStack driver, Fuel driver, Libvirt driver,
 IPMI driver, Universal driver).
 
 * Free software: Apache license
-* Documentation: http://os-faults.readthedocs.io
-* Source: https://github.com/openstack/os-faults
-* Bugs: http://bugs.launchpad.net/os-faults
+* Documentation: https://os-faults.readthedocs.io/
+* Source: https://opendev.org/performa/os-faults/
+* Bugs: https://bugs.launchpad.net/os-faults
 
 
 Installation
