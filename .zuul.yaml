@@ -12,6 +12,10 @@
     gate:
       jobs:
         - os-faults-devstack
+    post:
+      jobs:
+        - os-faults-upload-git-mirror
+
 
 - job:
     name: os-faults-devstack
@@ -28,3 +32,94 @@
       tox_envlist: devstack
       devstack_plugins:
         os-faults: https://opendev.org/performa/os-faults
+
+
+- secret:
+    name: os_faults_git_mirror_credentials
+    data:
+      user: git
+      host: github.com
+      host_key: github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+      ssh_key: !encrypted/pkcs1-oaep
+        - Z09B5qOMpv6m/bhwlEwPe+6VzO6vRcKKJExj5GJaS8tfKz3LrzpEgneRFc2KHqMHky2Df
+          P4x5f6GITEwLyVIF/CrV8hqR+NZhW4y5f0SxJlXxk7w2Ad0d9BYhsrOznR2UsGjEtx6v+
+          QOiNu0yt5/1g3HyPZbVZVRcgB8M5n0HWQjz9J7ipP1hLNGxlEJNFxqoncRNdJ1jxMOgs7
+          Pv7kNrGuWEtjQVrZbW5xj9Lup8nw2SAvNhvVVTim/Fq0g4BnVYYZDJhr7YDriL3GlIvrk
+          9IZNU9VzPj66rUt8xyN48gusbUjsTmny//uX8nfaA/I2rK6fsn5Lw8YUtUAhs4nVi20eL
+          ajp+cpCe7o/AXRCx5GY8440CE8kjblJ6kUb10Lwm0v2HUQ+adCEEsN8BZJeZoqO2N8MTM
+          ieF0Oaw8E/arxFel82AH2jEVwRNaVD4/7uVdOwcvoS2dhAos2id86oXpV1NX2AlrCqvkc
+          J9hQCNg95BILXCAWlYX4YNI8g2geI4KmgUzLsJ3ZMXTZX+2U2X03kE7jn31xhii3BBS65
+          I2iuYycpDQ9FhuNC2MUWeZiAZX7mrGY8+7oYtBQlxFfsvDGPu4+Xsj2sbIHLfrD7j/dWi
+          NCV6W/X45HlgnJTQSvep7YHB7fv9KyqnSiPABFNOE3ps95e9JOeWx/Av2ocpWo=
+        - uf9GtyUeQKtf8Zz9LHVtXDTtsqI4nwp452ISD97Me3FMV12FTIxmPxalgmXbLbPrdT5ap
+          3RYlFAAzF8G2FeBPufLxrzQJwqNnzQZt+UO2l+eYW019nTWc0VvBWvPEXwRJDk/4oq3XF
+          AJfqL/+UX+IH5H+f8ZHyvWdm4eNHRmiMZUheKkYl0tkZxas3K1I1+2JpiKPPaXnEtiyq/
+          M0HzYg7kClVAfeIRgB4J7ytyS0Jqv0saxrXKtnbiy7ZAYKwzRbWdoQkA5CG4Harc6g2DQ
+          w+boGpZ0dRpgOqNKNAnvUKzGfpQMCGEsKjrZNJB/VzPhvc3vwbTrQky91G4J9J3MfKivR
+          ZuxzwUYHc0tJvjTCxKpOGHsjKLppbOyRtWqJzo6OpTd0xaeTkgKP83AB3RzdSAW20p1IW
+          MDOTCp+QIJHp7z906d8TDZjpxGWbigV6Uxzz4AxifL8SGQ4zbDOEoVTIJ4gSnAvgCxiNk
+          9eFpqzBpfQKb7bedXN8Wywz+EF7gL5B0sK7LGolWY6bdV2pG2ixNozlhkgEzWIz+6h9aQ
+          q/3tjRjEd9qTLTyzVHLW3aYp7I14d+qGC73RCTfqBM92HeIIojQ/A83cGHMXnNwTHPDxJ
+          TNA44AGg4OwvmR4gVFWnE2YllTSnF/QPrALTK3FwYQyEhIF/mawXIhNIk+7UuA=
+        - inOMiBz9Zg1twk5DIORvPTktFcCEPhKP5oENC1a3AZhtVZYgKHhQFI1sAngdTir+NFR4o
+          QKS9R/xmj7wpQpJhVEctXfT/0uJfl5JoWUYr9SRwnmKvI9qOYRfAQmsJNJlmxEJeGQ8MJ
+          j4cl0r72ydClUhCFkAPpd1UGPQ1h7qtKkK4vPn/JYhhEKzqIlSpAFwm+edVrUx7ToDw62
+          KYq4T1TBROGHKUlLLntXYd2eLyDHGAgytPv8PuMie8YzUKULOwxlvIB/8/vai6g59lLNY
+          jvT9Zi2pvrZaes2W58kxaIPEApvHSI+JoZ2n2VAnhqy3GWK7RTrpvlQDB+QqdSAi1Pvkg
+          RSOfRz0lPC5LuYPPVw46ODhX+fKEdGKspWfIKhiJgoOEZn4wLjgqAj8M/vqEjSodZTUNh
+          NPcVrlzHvH/A02tNYsVBLG8gzGfcc7IjT5ZsVbGolGyFR4zkHKLlYXaAUjew9tTaYKX9I
+          +GyBWLPFEjcwxwV5tXbO5xXXidn+8lkYNUB3fcdhsLImx0YGbH8t1gbaSf3ZS+Cjox459
+          8AHop65wpKHsx21oV6BY3F7cIrqux+ZlN5u87UA/Be9Tlm8FgJgnNktf/VgUxxMZk7jcn
+          hJfTzuZWtyzxFMQ+WM4jNEsJ/jU1DeEOZ4kQ9oJ1Lr/g3WmRwjr6pGpZv3VQEc=
+        - fw/py0F/wQEEQhhQqWJktI8IqIUCzCmvyKwz6tTeX1SXujNStIV+yBZ3IvMpQf0EIGdrS
+          5jFfkYgbboywyNVWCWy9SoLDYrYnyh6fP39wkUl9wSH9NJKDBCJ3rAf+AcU/X5yPsQ2KG
+          Bxn11ZTv5EsHnp8XAekXhJeffM9bvK4SH+isjFInhYJTE4qRxuU+F9FpkSQBgLPw4GTnQ
+          Ch1uswOBDc5T5mb63f7xI4/dW/Sq+SZKjZxhbg8bYg56W1DX9W/HGcsBtq++w/8WLuc2B
+          ImY5vwGJzhp9MQNc+lM8g+U3OWXCUblm0IBR4bBQYlljl0pVnsYrylGkvpIcUBejMhi4M
+          5BpjraJ2I6UcJ7ygDQ/mEeWTmvinCi5dTF0mXohNSrdRLvrh8+muogNRrpwANUHQg2KPA
+          xFYxd9YJM8Gj/oeAv+8LxQvW1XICREj6HxMwN8PdSnXFxtbklxH1OGDpxcYvnLpx9qsBI
+          r8CeH1ClRBcD2EpGv3qwiqwy8d4Wer6fu62OU9150Fv8A+z8A+E08mzQHtIXkIvNKM1Fq
+          xNiG/Z53vZJr1plTU0NWPXAfUKBTKkNnlPxHmijVASo0GgIgBd2Z6mBAhuBIWBFZ35ov2
+          ejiiSKcvHstVaXjdjm/fyK+cIoMhgzkE5sLh4A7CbkmUgXKi1ig1XFulFVu8dA=
+        - JbDuPQ5II/lpHyD3LHIPQxgZvTyNqqau+2W2tv5cVYysaZmUXuj1Ec/QWRmHnDkp4M2Bw
+          8UmV64CH8I5+T8UAw43kGBTd4cPV+XYug0h+2X2TqcftVbIH7eO5p1+lJng7jZfC8Gsea
+          ebCoDSkU+aTcTf9qiLiJhHKuqCYZwJX081fIL5kvZPEK+4ODhu+Bicbl6dyN6Uv+Zmkue
+          PKjLUP6Jbq+Xe616pDzXdH5MwZk2+tnOJYah69oEiA8rw7s+ldztd5W062hS5SXwlbhSm
+          iXCZ/SqQDieZS2l7XfbmRW5vbdx59FteqKVOup1TR62PTFegtuPjh9sp/KQfhb/2ZnZJP
+          WRAAdQUZ/WrGm508Tyxt8Vg08v1YOYIGruy4sNcElwNSGWgklC0bPqTB92fDuoWIR8fVJ
+          3HGchjqgMiB9YqIyDD8spRN9fxGf5WEnC97/kLNwq4Tnk8cp6Jr6EQmvpwJ3lvmsFjVA+
+          s/6YMUa2bNm1YyiZobbkgBGHgrljiQy06Ax48v5H1gj7I09FxOfSRpgYiZt/Oa7JAMQj6
+          gA7YrrfVfzIDvq3orpBS3ks3A7Kr/kvFJgXJ8R+No33Zp9DDL865xPaY1+chzoDWd49u1
+          LlE/MLZnaduzuYi5XrzSch35iqMvLmqoTSxr0uI42jIkx4hHFFh65M72fNk3ik=
+        - r0mlzT4x4S1Vro95sikx2OCySjuH8gUVeCXvdtsRIYmwd5pTlMi8/NY6TDl4IiVWs2jDi
+          vi87qp9kN/Lx3Eq1GbiM/PRGbNfjSBpsg+3nIrHYWU9eG/muzhWXaZjDCf7XFlyruhMQT
+          3tzrjRbHYS23A2sNwh4OwrqI0NHhEivz61wBykSfmXprHp7Zr4fviD1HKXkJZ0z4jIEcx
+          3uJrqvb2LwFP9rJKtr+WA4qG8yUkjflJ3ai3Z/uj0q508zsIWjkI5EPHroKr2igRiuaCJ
+          xnE+WEo2jKFinH0DicN8meJhs4+XSac6g41A4SP6sePYLa7C6wIhXNH75vzb8zeKIcvTY
+          d5dlWveuEyZjp78Kxv0RIszHy3Ju5SSrBfB0w+NbeEms68wGC1xBvrw/1DCNSsxCSJ8mJ
+          BlMcEP1kMOAJye3oyTW+U0NTNx/iBWAH9lFjmo1/7aLKUzN7bBXpbDKj0IVNKhkqHtkp8
+          7R1hzfk4F1m4NWAl/eFMcHgRsaf51hwQ5D46TZ24ItMxdhmmpfLMbLfHoTttY300O0Mi0
+          FtgvLeRa9fUTho+N7+2c6KZmlxtsOeZgXiE0BtZHWS/CTggaj2j7Ai8Jj7j0SWobxsKgw
+          h0M3dHs/KcUq1A3SKXQClA2kfUB6enU4xid8BnN6D6LJvKcCgfW5zbJyx2slTM=
+        - lCcgg3BBAmk07//sb9QZW36zULY7XpHCEM+OtYBNbUZyV3/3Ia/75N11tpt3gsdibH2AD
+          LDnHrVDWVLJdAlmWDyMWAqKRSHuY8L3Xkl9koFfGKx/NyBotvM6AjvbMEFs+P6NRiLzD8
+          G/5MIDb9YCS012fximdeyHKbmhFcdMBcVweREXDl6tbTRK+bwOVKzOkxvTb9/3VRU3Uos
+          aESbT37FNi3/5bh1gL5tNaBizh/N/ZYJFply7J/+RvaOhbibkyu6H0s+bo+F0beo7D+/L
+          aksxQzUwdG2u9AZpWdi8B7/0dUWqTs7CXebH5vmNVOcq2HQuEkxKHx8rKk/x9dQRsQguW
+          PzMfBPaqabVPlkVL/yOoregpQBvcCeYgI9qE3FD5Ji3Kl+kk74HKTX2WHKPvWXtBgoLar
+          XBXPlk051p/m2GM0n6Ck6hhN00efKGtbWtB66geVdyZL7gu0zTcG7Wi3y7Vb6G3j7ABU5
+          q2IiIYvJdVUB/rnzaVvOuiypLxXBGhuEWF0guTg8L5zP7lOGceEapc/slypUVwd6r6bdJ
+          L4ZWr4XHKA4jExHrsSOKbZ83lNKgNsmK0Jx+NOqdBk1CG2PkeTYWiCcGsdRDAUYqMoXe8
+          lUnY/A5Kj/F7+cMUUHoNc9v8qwk38R4ot2bHaCimzgNl2iDqTIR3DWGRF0sWN4=
+
+
+- job:
+    name: os-faults-upload-git-mirror
+    parent: upload-git-mirror
+    description: Mirrors OpenDev performa/os-faults to Github performa-labs/os-faults
+    vars:
+      git_mirror_repository: performa-labs/os-faults
+    secrets:
+      - name: git_mirror_credentials
+        secret: os_faults_git_mirror_credentials
+        pass-to-parent: true
