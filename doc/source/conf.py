@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -28,10 +27,8 @@ on_zuul = "ZUUL_PROJECT" in os.environ
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosectionlabel',
-    #'sphinx.ext.intersphinx',
     'sphinxcontrib.programoutput',
     'ext.driver_doc',
-    'openstackdocstheme',
 ]
 
 version = os_faults.get_version()
@@ -50,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'os-faults'
-copyright = u'2016, OpenStack Foundation'
+copyright = u'2016-2020, OS-Faults contributors'
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = True

@@ -16,11 +16,12 @@ sphinx!=1.6.6,!=1.6.7,<2.0.0;python_version=='2.7'  # BSD
 sphinx!=1.6.6,!=1.6.7;python_version>='3.4'  # BSD
 sphinxcontrib-programoutput # BSD
 sphinx_rtd_theme # MIT
-openstackdocstheme>=1.11.0 # Apache-2.0
-oslotest>=1.10.0 # Apache-2.0
+oslotest>=1.10.0,<4.0.0;python_version=='2.7' # Apache-2.0
+oslotest>=1.10.0;python_version>='3.6' # Apache-2.0
 testrepository>=0.0.18 # Apache-2.0/BSD
 testscenarios>=0.4 # Apache-2.0/BSD
 testtools>=1.4.0 # MIT
 
 # releasenotes
-reno>=1.8.0 # Apache-2.0
+reno>=1.8.0,<3.0.0;python_version=='2.7' # Apache-2.0
+reno>=1.8.0;python_version>='3.6' # Apache-2.0
