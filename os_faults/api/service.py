@@ -82,18 +82,22 @@ class Service(base_driver.BaseDriver):
         raise NotImplementedError
 
     @public
-    def unplug(self, nodes=None):
+    def unplug(self, nodes=None, direction=None, other_port=None):
         """Unplug Service out of network on all nodes or on particular subset
 
         :param nodes: NodesCollection
+        :param direction: str, traffic direction 'ingress' or 'egress'
+        :param other_port: int, port number which needs to be blocked
         """
         raise NotImplementedError
 
     @public
-    def plug(self, nodes=None):
+    def plug(self, nodes=None, direction=None, other_port=None):
         """Plug Service into network on all nodes or on particular subset
 
         :param nodes: NodesCollection
+        :param direction: str, traffic direction 'ingress' or 'egress'
+        :param other_port: int, port number which needs to be allowed
         """
         raise NotImplementedError
 

@@ -62,6 +62,8 @@ NODE_ACTIONS_PATTERN = '|'.join(NODE_ACTIONS)
 PATTERNS = [
     re.compile(r'(?P<action>%s)'
                r'\s+(?P<service>\S+)\s+service'
+               r'(\s+(?P<direction>ingress|egress)\s+(to|from)'
+               r'\s+(?P<other_service>\S+)\s+service)?'
                r'(\s+on(\s+(?P<node>\S+))?\s+nodes?)?'
                r'(\s+for\s+(?P<duration>\d+)\s+seconds)?' %
                SERVICE_ACTIONS_PATTERN),
@@ -101,6 +103,7 @@ def execute(destructor, command):
     network_name = groups.get('network')
     target = groups.get('target')
     duration = groups.get('duration')
+    direction = groups.get('direction')
 
     if service_name:
         service = destructor.get_service(name=service_name)
@@ -115,6 +118,16 @@ def execute(destructor, command):
 
             if duration:
                 kwargs['sec'] = int(duration)
+
+            if direction:
+                other_service_name = groups.get('other_service')
+                if other_service_name:
+                    other_service = destructor.get_service(
+                        name=other_service_name)
+                    other_port = getattr(other_service, 'port', None)
+                    if other_port:
+                        kwargs['direction'] = direction
+                        kwargs['other_port'] = other_port
 
             fn = getattr(service, action)
             fn(**kwargs)

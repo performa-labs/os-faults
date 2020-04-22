@@ -154,16 +154,28 @@ class ServiceAsProcess(service.Service):
         self._run_task(nodes, task, 'Unfreeze')
 
     @utils.require_variables('port')
-    def plug(self, nodes=None):
+    def plug(self, nodes=None, direction=None, other_port=None):
         nodes = nodes if nodes is not None else self.get_nodes()
-        message = "Open port %d for" % self.port[1]
-        direction = self.port[2] if len(self.port) > 2 else 'ingress'
+
+        if other_port:
+            port = other_port
+        else:
+            # work with local service port
+            port = self.port
+            direction = self.port[2] if len(self.port) > 2 else 'ingress'
+
+        protocol = port[0]
+        port_number = port[1]
+
+        message = "Open %s traffic to %s port %d" % (
+            direction, protocol, port_number)
+
         task = {
             'iptables': {
                 'chain': 'INPUT' if direction == 'ingress' else 'OUTPUT',
-                'protocol': self.port[0],
+                'protocol': protocol,
                 'jump': 'DROP',
-                'destination_port': self.port[1],
+                'destination_port': '%d' % port_number,
                 'state': 'absent',
             },
             'become': 'yes',
@@ -171,18 +183,31 @@ class ServiceAsProcess(service.Service):
         self._run_task(nodes, task, message)
 
     @utils.require_variables('port')
-    def unplug(self, nodes=None):
+    def unplug(self, nodes=None, direction=None, other_port=None):
         nodes = nodes if nodes is not None else self.get_nodes()
-        message = "Close port %d for" % self.port[1]
-        direction = self.port[2] if len(self.port) > 2 else 'ingress'
+
+        if other_port:
+            port = other_port
+        else:
+            # work with local service port
+            port = self.port
+            direction = self.port[2] if len(self.port) > 2 else 'ingress'
+
+        protocol = port[0]
+        port_number = port[1]
+
+        message = "Block %s traffic to %s port %d" % (
+            direction, protocol, port_number)
+
         task = {
             'iptables': {
                 'chain': 'INPUT' if direction == 'ingress' else 'OUTPUT',
-                'protocol': self.port[0],
+                'protocol': protocol,
                 'jump': 'DROP',
-                'destination_port': self.port[1],
+                'destination_port': '%d' % port_number,
                 'action': 'insert',
                 'state': 'present',
+                'comment': 'Added by os-faults',
             },
             'become': 'yes',
         }

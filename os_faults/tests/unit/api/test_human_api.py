@@ -29,7 +29,8 @@ class TestHumanAPI(test.TestCase):
 
         self.destructor.get_service = mock.MagicMock(return_value=self.service)
 
-    @ddt.data(('restart', 'keystone'), ('kill', 'nova-api'))
+    @ddt.data(('restart', 'keystone'), ('kill', 'nova-api'),
+              ('unplug', 'keystone'), ('plug', 'nova-api'))
     @ddt.unpack
     def test_service_action(self, action, service_name):
 
@@ -67,7 +68,8 @@ class TestHumanAPI(test.TestCase):
         self.destructor.get_service.assert_called_once_with(name=service_name)
         getattr(self.service, action).assert_called_once_with(sec=t)
 
-    @ddt.data(('restart', 'keystone', 'node'), ('kill', 'nova-api', 'node'))
+    @ddt.data(('restart', 'keystone', 'node'), ('kill', 'nova-api', 'node'),
+              ('unplug', 'keystone', 'node'))
     @ddt.unpack
     def test_service_action_on_fqdn_node(self, action, service_name, node):
 
@@ -80,6 +82,29 @@ class TestHumanAPI(test.TestCase):
         self.destructor.get_service.assert_called_once_with(name=service_name)
         self.destructor.get_nodes.assert_called_once_with(fqdns=[node])
         getattr(self.service, action).assert_called_once_with(nodes=nodes)
+
+    @ddt.data(('unplug', 'keystone', 'egress', 'db'),
+              ('plug', 'nova', 'ingress', 'neutron'))
+    @ddt.unpack
+    def test_unplug_with_ref(self, action, service_name, direction,
+                             other_service_name):
+        other_port = ('tcp', mock.Mock())
+        other_service = mock.Mock()
+        other_service.port = other_port
+
+        self.destructor.get_service.side_effect = [
+            self.service,
+            other_service
+        ]
+
+        command = '%s %s service %s to %s service' % (
+            action, service_name, direction, other_service_name)
+        human.execute(self.destructor, command)
+
+        self.destructor.get_service.assert_has_calls(
+            [mock.call(name=service_name), mock.call(name=other_service_name)])
+        getattr(self.service, action).assert_called_once_with(
+            direction=direction, other_port=other_port)
 
     @ddt.data(('reboot', 'keystone'), ('reset', 'nova-api'))
     @ddt.unpack
