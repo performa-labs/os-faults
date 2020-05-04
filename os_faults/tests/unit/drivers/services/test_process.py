@@ -89,8 +89,33 @@ class TestServiceAsProcess(unittest.TestCase):
                 'jump': 'DROP',
                 'destination_port': '8000',
                 'state': 'absent',
+                'comment': 'Added by os-faults',
             },
             'become': 'yes',
         }
         self.cloud_management.execute_on_cloud.assert_called_once_with(
             self.hosts, expected_task)
+
+    def test_plug_port_is_required_in_config(self):
+        config = {
+            'grep': 'test-service',
+        }
+        service = ServiceAsProcess(
+            'test-service', config, mock.Mock(), mock.Mock())
+        node_collection = NodeCollection(
+            cloud_management=self.cloud_management, hosts=[])
+        service.get_nodes = mock.Mock(return_value=node_collection)
+
+        self.assertRaises(NotImplementedError, service.plug)
+
+    def test_unplug_port_is_required_in_config(self):
+        config = {
+            'grep': 'test-service',
+        }
+        service = ServiceAsProcess(
+            'test-service', config, mock.Mock(), mock.Mock())
+        node_collection = NodeCollection(
+            cloud_management=self.cloud_management, hosts=[])
+        service.get_nodes = mock.Mock(return_value=node_collection)
+
+        self.assertRaises(NotImplementedError, service.unplug)

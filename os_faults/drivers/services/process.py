@@ -153,7 +153,6 @@ class ServiceAsProcess(service.Service):
         }
         self._run_task(nodes, task, 'Unfreeze')
 
-    @utils.require_variables('port')
     def plug(self, nodes=None, direction=None, other_port=None):
         nodes = nodes if nodes is not None else self.get_nodes()
 
@@ -161,6 +160,11 @@ class ServiceAsProcess(service.Service):
             port = other_port
         else:
             # work with local service port
+            if not self.port:
+                msg = '{} required for {}.{}'.format(
+                    'port', self.__class__.__name__, 'plug')
+                raise NotImplementedError(msg)
+
             port = self.port
             direction = self.port[2] if len(self.port) > 2 else 'ingress'
 
@@ -177,12 +181,12 @@ class ServiceAsProcess(service.Service):
                 'jump': 'DROP',
                 'destination_port': '%d' % port_number,
                 'state': 'absent',
+                'comment': 'Added by os-faults',
             },
             'become': 'yes',
         }
         self._run_task(nodes, task, message)
 
-    @utils.require_variables('port')
     def unplug(self, nodes=None, direction=None, other_port=None):
         nodes = nodes if nodes is not None else self.get_nodes()
 
@@ -190,6 +194,11 @@ class ServiceAsProcess(service.Service):
             port = other_port
         else:
             # work with local service port
+            if not self.port:
+                msg = '{} required for {}.{}'.format(
+                    'port', self.__class__.__name__, 'plug')
+                raise NotImplementedError(msg)
+
             port = self.port
             direction = self.port[2] if len(self.port) > 2 else 'ingress'
 
